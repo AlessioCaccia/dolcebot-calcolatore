@@ -119,12 +119,6 @@
 </div>
 
 <style>
-
-  body {
-    max-width: 1230px;
-    margin: 0 auto;
-  }
-
   label {
     font-family: "Raleway", sans-serif;
 
@@ -141,6 +135,10 @@
     font-size: 20px;
     box-sizing: border-box;
   }
+  .input-grid {
+    max-width: 1230px;
+    margin: auto;
+  }
 
   .main-container {
     font-family: "Raleway", sans-serif;
@@ -150,6 +148,9 @@
     background: white;
     border-radius: 10px 10px 0 0;
     border: 1px solid #e5e5e5;
+
+    max-width: 1230px;
+    margin: auto;
   }
 
   .grid-container {
