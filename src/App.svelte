@@ -14,6 +14,9 @@
     },
   ];
   let aliquota_placeholder = "Seleziona aliquota";
+  const formatter = new Intl.NumberFormat("it-IT", {
+    maximumFractionDigits: 2,
+  });
 
   // Derived values
   $: ota = fatturato * 0.18;
@@ -65,8 +68,6 @@
   <div class="input-group">
     <label for="aliquota">Cedolare secca (%)</label>
     <select id="aliquota" bind:value={aliquota}>
-      <!-- <option value="0.21">21%</option>
-      <option value="0.26">26%</option> -->
       {#each aliquota_options as option}
         <option value={option.value}>
           {option.label || option.text}
@@ -75,46 +76,57 @@
     </select>
   </div>
 </div>
-
 <div class="main-container">
   <div class="grid-container">
-    <div class="grid-header-cell other-header b0"></div>
-    <div class="grid-header-cell bt-0">
-      <img
-        src="https://dolcebot.komunikasi.it/wp-content/uploads/2025/06/logo_scuro.svg"
-        alt="DolceBot Logo"
-        class="dolcebot-logo"
-      />
+    <div class="grid-header-cell other-header b0 dnone-mobile"></div>
+    <div class="grid-header-cell other-header bt-0">
+      <picture>
+        <source
+          srcset="https://www.dolcebot.com/wp-content/uploads/2025/06/Group-1.svg"
+          media="(max-width: 768px)"
+        />
+        <img
+          src="https://www.dolcebot.com/wp-content/uploads/2025/06/logo_scuro.svg"
+          alt="DolceBot Logo"
+          class="dolcebot-logo-img"
+        />
+      </picture>
     </div>
     <div class="grid-header-cell other-header bt-0">GESTIONE AUTONOMA</div>
     <div class="grid-header-cell other-header bt-0">GESTIONE PM</div>
 
-    <div class="grid-data-cell">Commissioni OTA</div>
-    <div class="grid-data-cell tred">{ota.toFixed(2)}</div>
-    <div class="grid-data-cell tred">{ota.toFixed(2)}</div>
-    <div class="grid-data-cell tred">{ota.toFixed(2)}</div>
+    <div class="grid-data-cell detail">Commissioni OTA</div>
+    <div class="grid-data-cell tred">€ {formatter.format(ota)}</div>
+    <div class="grid-data-cell tred">€ {formatter.format(ota)}</div>
+    <div class="grid-data-cell tred">€ {formatter.format(ota)}</div>
 
-    <div class="grid-data-cell">Pulizie</div>
-    <div class="grid-data-cell tred">{pulizie.toFixed(2)}</div>
-    <div class="grid-data-cell tred">{pulizie.toFixed(2)}</div>
-    <div class="grid-data-cell tred">{pulizie.toFixed(2)}</div>
+    <div class="grid-data-cell detail">Pulizie</div>
+    <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
+    <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
+    <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
 
-    <div class="grid-data-cell">Cedolare secca</div>
-    <div class="grid-data-cell tred">{db_ced.toFixed(2)}</div>
-    <div class="grid-data-cell tred">{auto_ced.toFixed(2)}</div>
-    <div class="grid-data-cell tred">{pm_ced.toFixed(2)}</div>
+    <div class="grid-data-cell detail">Cedolare secca</div>
+    <div class="grid-data-cell tred">€ {formatter.format(db_ced)}</div>
+    <div class="grid-data-cell tred">€ {formatter.format(auto_ced)}</div>
+    <div class="grid-data-cell tred">€ {formatter.format(pm_ced)}</div>
 
-    <div class="grid-data-cell">Commissioni gestore</div>
-    <div class="grid-data-cell tred">{db_comm.toFixed(2)}</div>
-    <div class="grid-data-cell tred">0.00</div>
-    <div class="grid-data-cell tred">{pm_comm.toFixed(2)}</div>
+    <div class="grid-data-cell detail">Commissioni gestore</div>
+    <div class="grid-data-cell tred">€{formatter.format(db_comm)}</div>
+    <div class="grid-data-cell tred">€ 0</div>
+    <div class="grid-data-cell tred">€ {formatter.format(pm_comm)}</div>
 
-    <div class="grid-data-cell net-profit-row-item">Netto proprietario</div>
-    <div class="grid-data-cell net-profit-row-item">{db_netto.toFixed(2)}</div>
-    <div class="grid-data-cell net-profit-row-item">
-      {auto_netto.toFixed(2)}
+    <div class="grid-data-cell net-profit-row-item detail">
+      Netto proprietario
     </div>
-    <div class="grid-data-cell net-profit-row-item">{pm_netto.toFixed(2)}</div>
+    <div class="grid-data-cell net-profit-row-item">
+      € {formatter.format(db_netto)}
+    </div>
+    <div class="grid-data-cell net-profit-row-item">
+      € {formatter.format(auto_netto)}
+    </div>
+    <div class="grid-data-cell net-profit-row-item">
+      € {formatter.format(pm_netto)}
+    </div>
   </div>
 </div>
 
@@ -135,6 +147,7 @@
     font-size: 20px;
     box-sizing: border-box;
   }
+
   .input-grid {
     max-width: 1230px;
     margin: auto;
@@ -159,6 +172,7 @@
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr 1fr;
     border-collapse: collapse;
+    align-items: center;
   }
 
   .grid-header-cell,
@@ -178,7 +192,7 @@
   .other-header {
     font-family: "Raleway", sans-serif;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .grid-data-cell:nth-child(4n + 1) {
@@ -192,11 +206,6 @@
     color: white;
     font-weight: 600;
     border: 0;
-  }
-
-  img.dolcebot-logo {
-    max-width: 100%;
-    height: auto;
   }
 
   .input-grid {
@@ -245,5 +254,74 @@
 
   .tred {
     color: #ff0037;
+  }
+
+  @media (max-width: 768px) {
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      min-width: auto;
+    }
+
+    .grid-header-cell,
+    .grid-data-cell {
+      padding: 13px 6px;
+    }
+
+    .grid-header-cell.bt-0:first-of-type {
+      grid-column: span 3;
+      text-align: center;
+    }
+
+    .grid-header-cell.other-header {
+      grid-column: span 1;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .grid-header-cell.bt-0:not(:first-of-type) {
+      grid-column: span 1;
+    }
+
+    .grid-data-cell.detail {
+      grid-column: span 3;
+      font-weight: bold;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+
+    .grid-data-cell.tred {
+      text-align: center;
+      color: #ff0037;
+    }
+
+    .net-profit-row-item.detail {
+      grid-column: span 3;
+      background-color: #0057ff;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .net-profit-row-item:not(.detail) {
+      background-color: #0057ff;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .main-container {
+      overflow-x: hidden;
+      padding: 2px;
+    }
+
+    .dnone-mobile {
+      display: none;
+    }
+
+    .dolcebot-logo-img {
+      margin: auto;
+    }
   }
 </style>
