@@ -13,7 +13,7 @@
       value: 0.26,
     },
   ];
-  let aliquota_placeholder = "Seleziona aliquota";
+
   const formatter = new Intl.NumberFormat("it-IT", {
     maximumFractionDigits: 2,
   });
@@ -32,6 +32,35 @@
   $: db_comm = (fatturato - ota - pulizie) * 0.06;
   $: db_ced = (fatturato - ota - pulizie - db_comm) * aliquota;
   $: db_netto = fatturato - ota - pulizie - db_comm - db_ced;
+
+  // svelte .detail onclick
+  // @ts-ignore
+  function toggleDetail(event) {
+    const target = event.target;
+
+    const targetClass = target.classList[0];
+
+    const nextSiblings = document.querySelectorAll(`.tred.${targetClass}`);
+
+    if (target.classList.contains("toggled")) {
+      // @ts-ignore
+      target.classList.remove("toggled");
+    } else {
+      // @ts-ignore
+      target.classList.add("toggled");
+    }
+
+    nextSiblings.forEach((sibling) => {
+      // @ts-ignore
+      if (sibling.classList.contains("collapsed")) {
+        // @ts-ignore
+        sibling.classList.remove("collapsed");
+      } else {
+        // @ts-ignore
+        sibling.classList.add("collapsed");
+      }
+    });
+  }
 </script>
 
 <div class="input-grid">
@@ -95,36 +124,59 @@
     <div class="grid-header-cell other-header bt-0">GESTIONE AUTONOMA</div>
     <div class="grid-header-cell other-header bt-0">GESTIONE PM</div>
 
-    <div class="grid-data-cell detail">Commissioni OTA</div>
-    <div class="grid-data-cell tred">€ {formatter.format(ota)}</div>
-    <div class="grid-data-cell tred">€ {formatter.format(ota)}</div>
-    <div class="grid-data-cell tred">€ {formatter.format(ota)}</div>
+    <!-- Fatturato netto mobile -->
 
-    <div class="grid-data-cell detail">Pulizie</div>
+    <div class="grid-data-cell net-profit-row-item detail dnone-desktop">
+      Netto proprietario
+    </div>
+    <div class="grid-data-cell net-profit-row-item dnone-desktop">
+      € {formatter.format(db_netto)}
+    </div>
+    <div class="grid-data-cell net-profit-row-item dnone-desktop">
+      € {formatter.format(auto_netto)}
+    </div>
+    <div class="grid-data-cell net-profit-row-item dnone-desktop">
+      € {formatter.format(pm_netto)}
+    </div>
+
+    <div class="grid-data-cell detail">
+      Commissioni OTA
+      <button
+        type="button"
+        aria-label="Toggle"
+        class="ota collapse-cta dnone-desktop"
+        on:click={toggleDetail}>˄</button
+      >
+    </div>
+    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
+    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
+    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
+
+    <div class="grid-data-cell detail puliz">Pulizie</div>
     <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
     <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
     <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
 
-    <div class="grid-data-cell detail">Cedolare secca</div>
+    <div class="grid-data-cell detail cedol">Cedolare secca</div>
     <div class="grid-data-cell tred">€ {formatter.format(db_ced)}</div>
     <div class="grid-data-cell tred">€ {formatter.format(auto_ced)}</div>
     <div class="grid-data-cell tred">€ {formatter.format(pm_ced)}</div>
 
-    <div class="grid-data-cell detail">Commissioni gestore</div>
+    <div class="grid-data-cell detail comm">Commissioni gestore</div>
     <div class="grid-data-cell tred">€{formatter.format(db_comm)}</div>
     <div class="grid-data-cell tred">€ 0</div>
     <div class="grid-data-cell tred">€ {formatter.format(pm_comm)}</div>
 
-    <div class="grid-data-cell net-profit-row-item detail">
+    <div class="grid-data-cell net-profit-row-item detail dnone-mobile">
       Netto proprietario
     </div>
-    <div class="grid-data-cell net-profit-row-item">
+    <div class="grid-data-cell net-profit-row-item dnone-mobile">
       € {formatter.format(db_netto)}
     </div>
-    <div class="grid-data-cell net-profit-row-item">
+    <div class="grid-data-cell net-profit-row-item dnone-mobile">
       € {formatter.format(auto_netto)}
     </div>
-    <div class="grid-data-cell net-profit-row-item">
+    <div class="grid-data-cell net-profit-row-item dnone-mobile">
       € {formatter.format(pm_netto)}
     </div>
   </div>
@@ -256,6 +308,23 @@
     color: #ff0037;
   }
 
+  .collapse-cta {
+    font-size: 16px;
+    color: #0057ff;
+    background: none;
+    transition: transform 0.5s ease;
+  }
+
+  :global(.toggled) {
+    transform: rotate(180deg);
+  }
+
+  @media (min-width: 769px) {
+    .dnone-desktop {
+      display: none;
+    }
+  }
+
   @media (max-width: 768px) {
     .grid-container {
       display: grid;
@@ -294,6 +363,8 @@
     .grid-data-cell.tred {
       text-align: center;
       color: #ff0037;
+      transition: height 0.3s ease;
+      height: 52px;
     }
 
     .net-profit-row-item.detail {
@@ -322,6 +393,13 @@
 
     .dolcebot-logo-img {
       margin: auto;
+    }
+
+    :global(.collapsed) {
+      visibility: hidden;
+      height: 0 !important;
+      overflow: hidden;
+      padding: 0 !important;
     }
   }
 </style>
