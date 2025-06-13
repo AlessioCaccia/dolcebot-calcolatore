@@ -139,33 +139,75 @@
       € {formatter.format(pm_netto)}
     </div>
 
-    <div class="grid-data-cell detail">
-      Commissioni OTA
-      <button
-        type="button"
-        aria-label="Toggle"
-        class="ota collapse-cta dnone-desktop"
-        on:click={toggleDetail}>˄</button
-      >
+    <!-- end fatturato netto mobile -->
+
+    <button
+      type="button"
+      aria-label="Toggle"
+      class="ota grid-data-cell detail collapse-cta toggled"
+      on:click={toggleDetail}
+    >
+      Commissioni OTA <i class="dnone-desktop">🡩</i>
+    </button>
+
+    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
+    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
+    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
+
+    <button
+      type="button"
+      aria-label="Toggle"
+      class="pulizie grid-data-cell detail collapse-cta"
+      on:click={toggleDetail}
+    >
+      Pulizie <i class="dnone-desktop">🡩</i>
+    </button>
+
+    <div class="grid-data-cell tred pulizie collapsed">
+      € {formatter.format(pulizie)}
     </div>
-    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
-    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
-    <div class="grid-data-cell tred ota">€ {formatter.format(ota)}</div>
+    <div class="grid-data-cell tred pulizie collapsed">
+      € {formatter.format(pulizie)}
+    </div>
+    <div class="grid-data-cell tred pulizie collapsed">
+      € {formatter.format(pulizie)}
+    </div>
 
-    <div class="grid-data-cell detail puliz">Pulizie</div>
-    <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
-    <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
-    <div class="grid-data-cell tred">€ {formatter.format(pulizie)}</div>
+    <button
+      type="button"
+      aria-label="Toggle"
+      class="cedolare grid-data-cell detail collapse-cta"
+      on:click={toggleDetail}
+    >
+      Cedolare secca <i class="dnone-desktop">🡩</i>
+    </button>
 
-    <div class="grid-data-cell detail cedol">Cedolare secca</div>
-    <div class="grid-data-cell tred">€ {formatter.format(db_ced)}</div>
-    <div class="grid-data-cell tred">€ {formatter.format(auto_ced)}</div>
-    <div class="grid-data-cell tred">€ {formatter.format(pm_ced)}</div>
+    <div class="grid-data-cell tred cedolare collapsed">
+      € {formatter.format(db_ced)}
+    </div>
+    <div class="grid-data-cell tred cedolare collapsed">
+      € {formatter.format(auto_ced)}
+    </div>
+    <div class="grid-data-cell tred cedolare collapsed">
+      € {formatter.format(pm_ced)}
+    </div>
 
-    <div class="grid-data-cell detail comm">Commissioni gestore</div>
-    <div class="grid-data-cell tred">€{formatter.format(db_comm)}</div>
-    <div class="grid-data-cell tred">€ 0</div>
-    <div class="grid-data-cell tred">€ {formatter.format(pm_comm)}</div>
+    <button
+      type="button"
+      aria-label="Toggle"
+      class="comm-gest grid-data-cell detail collapse-cta"
+      on:click={toggleDetail}
+    >
+      Commissioni gestore <i class="dnone-desktop">🡩</i>
+    </button>
+
+    <div class="grid-data-cell tred comm-gest collapsed">
+      €{formatter.format(db_comm)}
+    </div>
+    <div class="grid-data-cell tred comm-gest collapsed">€ 0</div>
+    <div class="grid-data-cell tred comm-gest collapsed">
+      € {formatter.format(pm_comm)}
+    </div>
 
     <div class="grid-data-cell net-profit-row-item detail dnone-mobile">
       Netto proprietario
@@ -309,13 +351,21 @@
   }
 
   .collapse-cta {
+    position: relative;
+  }
+
+  .collapse-cta i {
     font-size: 16px;
     color: #0057ff;
     background: none;
     transition: transform 0.5s ease;
+    position: absolute;
+    right: 28px;
+    /* width: 0; */
+    pointer-events: none;
   }
 
-  :global(.toggled) {
+  :global(.toggled i) {
     transform: rotate(180deg);
   }
 
