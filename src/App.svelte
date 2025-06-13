@@ -352,6 +352,19 @@
 
   .collapse-cta {
     position: relative;
+    border-radius: 0 !important;
+    font-size: 16px !important;
+    cursor: default;
+  }
+
+  .collapse-cta:hover {
+    background-color: #fff !important;
+    color: #162047 !important;
+  }
+
+  .collapse-cta:focus {
+    background-color: #fff !important;
+    color: #162047 !important;
   }
 
   .collapse-cta i {
